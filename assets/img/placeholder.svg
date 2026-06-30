@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="100%" height="100%">
+  <rect width="150" height="150" fill="#f1f5f9" />
+  <!-- Head -->
+  <circle cx="75" cy="55" r="28" fill="#cbd5e1" />
+  <!-- Shoulders / Body -->
+  <path d="M 25 125 C 25 95, 125 95, 125 125 Z" fill="#cbd5e1" />
+  <!-- Decorative border -->
+  <rect x="2" y="2" width="146" height="146" rx="6" fill="none" stroke="#e2e8f0" stroke-width="2" />
+</svg>

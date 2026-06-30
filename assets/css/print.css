@@ -1,0 +1,120 @@
+/* Styles de haut niveau pour l'impression A4 du CV */
+@media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 12pt;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Masquer tous les éléments d'interface du site */
+  header,
+  footer,
+  .hero-section,
+  .advantages-section,
+  .templates-section,
+  .tips-section,
+  .faq-section,
+  .generator-sidebar, /* Le formulaire de gauche */
+  .cv-personalization, /* Barre de réglages de couleur/police */
+  .cv-download-bar,
+  .alert-toast,
+  .btn-scroll-top {
+    display: none !important;
+  }
+
+  /* Ajuster le conteneur principal */
+  main,
+  .generator-section,
+  .generator-grid {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+  }
+
+  .generator-preview-sticky {
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* Adapter le conteneur de l'aperçu */
+  .generator-preview {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Forcer le rendu A4 exact pour le document CV */
+  .cv-document {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 20mm !important; /* Marges d'impression */
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
+  }
+
+  /* Ajustement de la structure interne pour l'impression */
+  .cv-section {
+    page-break-inside: avoid !important; /* Évite de couper une section au milieu */
+    margin-bottom: 5mm !important;
+  }
+
+  .cv-grid {
+    gap: 6mm !important;
+  }
+
+  /* Assurer le contraste du texte lors de l'impression */
+  h1, h2, h3, h4 {
+    color: var(--cv-accent-color, #1e3a8a) !important;
+  }
+
+  p, li, span, a {
+    color: #334155 !important;
+  }
+
+  /* Forcer l'affichage des couleurs d'accentuation en impression */
+  .cv-accent-bg {
+    background-color: var(--cv-accent-color, #2563eb) !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .badge {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .skill-dot-fill {
+    background-color: var(--cv-accent-color, #2563eb) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .skill-dot-empty {
+    background-color: #e2e8f0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
