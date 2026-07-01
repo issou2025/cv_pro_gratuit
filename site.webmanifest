@@ -1,0 +1,12 @@
+{
+  "name": "CV Gratuit Pro",
+  "short_name": "CV Pro",
+  "description": "Créer un CV moderne gratuitement en ligne avec export PDF.",
+  "start_url": "/cv_pro_gratuit/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "lang": "fr",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "education"]
+}
