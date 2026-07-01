@@ -4,33 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#2563eb">
-  <title>CV Gratuit Pro - Créez un CV moderne gratuitement</title>
-  <meta name="description" content="Créez gratuitement un CV professionnel, moderne et élégant en quelques minutes. Sans inscription, responsive, rapide et exportable en PDF.">
+  <title>CV Gratuit Pro - Générateur de CV moderne gratuit</title>
+  <meta name="description" content="Créez gratuitement un CV moderne, professionnel et compatible mobile. Aperçu en direct, score CV, modèles, couleurs, lettre de motivation, import/export et PDF.">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/print.css" media="print">
 </head>
 <body>
   <header>
     <div class="container navbar">
-      <a href="#accueil" class="logo" aria-label="CV Gratuit Pro">
-        <div class="logo-icon">CV</div>
-        <span>Gratuit Pro</span>
-      </a>
-
+      <a href="#accueil" class="logo"><div class="logo-icon">CV</div><span>Gratuit Pro</span></a>
       <nav class="nav-links" id="nav-links">
         <a href="#accueil" class="nav-link active">Accueil</a>
-        <a href="#avantages" class="nav-link">Avantages</a>
-        <a href="#modeles" class="nav-link">Modèles</a>
+        <a href="#fonctionnalites" class="nav-link">Fonctionnalités</a>
         <a href="#generateur" class="nav-link">Créer mon CV</a>
-        <a href="#conseils" class="nav-link">Conseils</a>
+        <a href="#lettre" class="nav-link">Lettre</a>
         <a href="#faq" class="nav-link">FAQ</a>
       </nav>
-
       <div class="nav-cta">
+        <button class="theme-btn" id="themeToggle" title="Mode sombre / clair">🌙</button>
         <a href="#generateur" class="btn btn-primary btn-sm">Créer mon CV</a>
-        <button class="hamburger" id="hamburger-toggle" aria-label="Ouvrir le menu">
-          <span></span><span></span><span></span>
-        </button>
+        <button class="hamburger" id="hamburger-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -39,85 +32,58 @@
     <section id="accueil" class="hero">
       <div class="container">
         <div class="hero-content">
-          <div class="badge">100% gratuit • Sans inscription • Export PDF</div>
-          <h1 class="hero-title">Créez un <span>CV moderne</span> qui donne envie de vous recruter.</h1>
-          <p class="hero-subtitle">Un générateur de CV rapide, élégant et professionnel. Remplissez vos informations, visualisez le résultat en direct et imprimez votre CV en PDF en quelques minutes.</p>
+          <div class="badge">Nouveau • 14 fonctionnalités • 100% statique</div>
+          <h1 class="hero-title">Le générateur de <span>CV gratuit</span> qui ressemble à une vraie application premium.</h1>
+          <p class="hero-subtitle">Créez un CV moderne avec aperçu direct, score de qualité, modèles, couleurs, lettre de motivation, sauvegarde locale, import/export et impression PDF.</p>
           <div class="hero-actions">
-            <a href="#generateur" class="btn btn-primary btn-lg">Commencer gratuitement</a>
-            <a href="#modeles" class="btn btn-secondary btn-lg">Voir les modèles</a>
+            <a href="#generateur" class="btn btn-primary btn-lg">Créer mon CV maintenant</a>
+            <a href="#fonctionnalites" class="btn btn-secondary btn-lg">Voir les 14 fonctions</a>
           </div>
           <div class="hero-stats">
-            <div class="stat"><strong>0€</strong><span>Aucun paiement</span></div>
-            <div class="stat"><strong>3 min</strong><span>CV prêt rapidement</span></div>
-            <div class="stat"><strong>PDF</strong><span>Export par impression</span></div>
+            <div class="stat"><strong>14</strong><span>Fonctions utiles</span></div>
+            <div class="stat"><strong>0€</strong><span>Sans inscription</span></div>
+            <div class="stat"><strong>PDF</strong><span>Export propre</span></div>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="cv-document">
-            <div class="cv-header">
-              <h1>Sarah Martin</h1>
-              <p>Chargée de communication digitale</p>
-            </div>
-            <div class="cv-body">
-              <aside>
-                <div class="cv-section">
-                  <h2>Contact</h2>
-                  <p>sarah@email.com</p>
-                  <p>+33 6 12 34 56 78</p>
-                  <p>Paris, France</p>
-                </div>
-                <div class="cv-section">
-                  <h2>Compétences</h2>
-                  <p>SEO • Canva • Réseaux sociaux • Rédaction • Analytics</p>
-                </div>
-              </aside>
-              <div>
-                <div class="cv-section">
-                  <h2>Profil</h2>
-                  <p>Professionnelle créative avec une forte capacité à valoriser une marque, structurer une campagne et produire du contenu clair, moderne et performant.</p>
-                </div>
-                <div class="cv-section">
-                  <h2>Expérience</h2>
-                  <div class="cv-item">
-                    <h3>Community Manager</h3>
-                    <p class="cv-meta">Agence Nova • 2022 - Présent</p>
-                    <p>Gestion de campagnes digitales, création de contenus et suivi des performances.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div class="hero-visual app-showcase">
+          <div class="showcase-top"><span></span><span></span><span></span></div>
+          <div class="score-ring"><strong id="heroScore">82</strong><small>Score CV</small></div>
+          <div class="mini-dashboard">
+            <div><b>Modèle</b><span id="heroTemplate">Professionnel</span></div>
+            <div><b>Couleur</b><span>Bleu premium</span></div>
+            <div><b>Export</b><span>PDF + JSON</span></div>
+          </div>
+          <div class="cv-document mini-cv">
+            <div class="cv-header"><h1>Sarah Martin</h1><p>Chargée de communication digitale</p></div>
+            <div class="cv-body"><aside><div class="cv-section"><h2>Contact</h2><p>sarah@email.com</p><p>Paris, France</p></div><div class="cv-section"><h2>Compétences</h2><p>SEO • Réseaux sociaux • Analytics</p></div></aside><div><div class="cv-section"><h2>Profil</h2><p>Profil créatif, organisé et orienté résultats.</p></div><div class="cv-section"><h2>Expérience</h2><div class="cv-item"><h3>Community Manager</h3><p class="cv-meta">Agence Nova • 2022 - Présent</p></div></div></div></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="avantages">
+    <section id="fonctionnalites">
       <div class="container">
         <div class="section-header">
-          <span class="section-badge">Pourquoi ce site est puissant</span>
-          <h2 class="section-title">Un outil simple, beau et directement utile.</h2>
-          <p>Le site va droit au but : pas de compte, pas de blocage, pas de complication. L’utilisateur remplit, visualise et exporte.</p>
+          <span class="section-badge">14 fonctionnalités ajoutées</span>
+          <h2 class="section-title">Un site plus moderne, plus utile et plus impressionnant.</h2>
+          <p>Tout fonctionne sans serveur : le navigateur gère l’aperçu, le stockage, les modèles, les scores et les exports.</p>
         </div>
-        <div class="advantages-grid">
-          <article class="advantage-card"><div class="advantage-icon">⚡</div><h3>Rapide</h3><p>Une interface fluide pensée pour créer un CV sans perdre du temps.</p></article>
-          <article class="advantage-card"><div class="advantage-icon">🎨</div><h3>Design moderne</h3><p>Cartes vitrées, dégradés premium, typographie claire et rendu professionnel.</p></article>
-          <article class="advantage-card"><div class="advantage-icon">🔒</div><h3>Confidentiel</h3><p>Les données restent dans le navigateur. Aucun compte obligatoire.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section id="modeles">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-badge">Modèles</span>
-          <h2 class="section-title">Des styles propres pour différents profils.</h2>
-          <p>Un rendu professionnel adapté aux étudiants, techniciens, ingénieurs, commerciaux, développeurs et profils administratifs.</p>
-        </div>
-        <div class="templates-grid">
-          <article class="template-card"><h3>Moderne</h3><p>Parfait pour les profils créatifs, marketing, digital et communication.</p></article>
-          <article class="template-card"><h3>Professionnel</h3><p>Idéal pour les ingénieurs, techniciens, cadres et postes administratifs.</p></article>
-          <article class="template-card"><h3>Simple</h3><p>Un CV clair, lisible et direct pour candidater rapidement.</p></article>
+        <div class="features-grid feature-14">
+          <article class="feature-card"><div class="feature-icon">1</div><h3>Aperçu en direct</h3><p>Chaque champ modifie immédiatement le CV.</p></article>
+          <article class="feature-card"><div class="feature-icon">2</div><h3>Score CV</h3><p>Une note dynamique indique la qualité du CV.</p></article>
+          <article class="feature-card"><div class="feature-icon">3</div><h3>Barre de complétion</h3><p>Suivi visuel du remplissage du dossier.</p></article>
+          <article class="feature-card"><div class="feature-icon">4</div><h3>3 modèles</h3><p>Moderne, professionnel et minimaliste.</p></article>
+          <article class="feature-card"><div class="feature-icon">5</div><h3>Couleurs personnalisées</h3><p>Choix rapide de palettes premium.</p></article>
+          <article class="feature-card"><div class="feature-icon">6</div><h3>Mode sombre</h3><p>Interface moderne jour/nuit.</p></article>
+          <article class="feature-card"><div class="feature-icon">7</div><h3>Sauvegarde locale</h3><p>Les informations restent dans le navigateur.</p></article>
+          <article class="feature-card"><div class="feature-icon">8</div><h3>Export PDF</h3><p>Impression propre en PDF.</p></article>
+          <article class="feature-card"><div class="feature-icon">9</div><h3>Export JSON</h3><p>Sauvegarde complète des données.</p></article>
+          <article class="feature-card"><div class="feature-icon">10</div><h3>Import JSON</h3><p>Recharge un CV précédemment sauvegardé.</p></article>
+          <article class="feature-card"><div class="feature-icon">11</div><h3>Lettre de motivation</h3><p>Génération instantanée d’une lettre simple.</p></article>
+          <article class="feature-card"><div class="feature-icon">12</div><h3>Conseils intelligents</h3><p>Suggestions selon les champs manquants.</p></article>
+          <article class="feature-card"><div class="feature-icon">13</div><h3>Photo de profil</h3><p>Import local d’une photo sans serveur.</p></article>
+          <article class="feature-card"><div class="feature-icon">14</div><h3>Responsive mobile</h3><p>Utilisation agréable sur téléphone.</p></article>
         </div>
       </div>
     </section>
@@ -125,9 +91,26 @@
     <section id="generateur">
       <div class="container">
         <div class="section-header">
-          <span class="section-badge">Générateur en direct</span>
-          <h2 class="section-title">Remplissez votre CV et voyez le résultat immédiatement.</h2>
-          <p>Les champs principaux sont connectés à l’aperçu. Vous pouvez ensuite imprimer ou enregistrer en PDF.</p>
+          <span class="section-badge">Studio CV</span>
+          <h2 class="section-title">Créez, personnalisez, contrôlez et exportez votre CV.</h2>
+          <p>Le générateur devient une vraie mini-application professionnelle.</p>
+        </div>
+
+        <div class="studio-panel">
+          <div class="studio-metrics">
+            <div class="metric"><span>Score CV</span><strong id="scoreValue">0</strong></div>
+            <div class="metric"><span>Complétion</span><strong id="completionValue">0%</strong></div>
+            <div class="progress-wrap"><div class="progress-bar" id="completionBar"></div></div>
+          </div>
+          <div class="tool-row">
+            <button class="chip active" data-template="pro">Professionnel</button>
+            <button class="chip" data-template="modern">Moderne</button>
+            <button class="chip" data-template="minimal">Minimaliste</button>
+            <button class="color-dot active" data-color="#2563eb" style="--dot:#2563eb"></button>
+            <button class="color-dot" data-color="#7c3aed" style="--dot:#7c3aed"></button>
+            <button class="color-dot" data-color="#0f766e" style="--dot:#0f766e"></button>
+            <button class="color-dot" data-color="#ea580c" style="--dot:#ea580c"></button>
+          </div>
         </div>
 
         <div class="generator-layout">
@@ -142,6 +125,7 @@
                 <div class="form-group"><label>Adresse</label><input id="address" value="Paris, France"></div>
                 <div class="form-group"><label>LinkedIn / Portfolio</label><input id="website" value="linkedin.com/in/jeandupont"></div>
               </div>
+              <div class="form-group"><label>Photo de profil</label><input id="photoInput" type="file" accept="image/*"></div>
             </div>
 
             <div class="form-section">
@@ -169,49 +153,32 @@
               <div class="form-group"><label>Compétences</label><textarea id="skills">HTML, CSS, JavaScript, React, Git, UI/UX, Responsive Design</textarea></div>
             </div>
 
+            <div class="tips-box"><h3>Conseils automatiques</h3><ul id="tipsList"></ul></div>
+
             <div class="generator-actions">
               <button class="btn btn-primary" id="printBtn">Télécharger en PDF</button>
-              <button class="btn btn-secondary" id="resetBtn">Réinitialiser</button>
+              <button class="btn btn-secondary" id="exportBtn">Exporter JSON</button>
+              <label class="btn btn-secondary import-label">Importer JSON<input id="importInput" type="file" accept="application/json" hidden></label>
+              <button class="btn btn-outline" id="resetBtn">Réinitialiser</button>
             </div>
           </div>
 
           <div class="preview-panel">
-            <div class="cv-document" id="cv-preview">
+            <div class="cv-document cv-template-pro" id="cv-preview">
               <div class="cv-header">
-                <h1 id="previewName">Jean Dupont</h1>
-                <p id="previewJob">Développeur Web Fullstack</p>
+                <img id="previewPhoto" class="cv-photo" alt="Photo" hidden>
+                <div><h1 id="previewName">Jean Dupont</h1><p id="previewJob">Développeur Web Fullstack</p></div>
               </div>
               <div class="cv-body">
                 <aside>
-                  <div class="cv-section">
-                    <h2>Contact</h2>
-                    <p id="previewEmail">jean.dupont@email.com</p>
-                    <p id="previewPhone">06 12 34 56 78</p>
-                    <p id="previewAddress">Paris, France</p>
-                    <p id="previewWebsite">linkedin.com/in/jeandupont</p>
-                  </div>
-                  <div class="cv-section">
-                    <h2>Compétences</h2>
-                    <p id="previewSkills">HTML, CSS, JavaScript, React, Git, UI/UX, Responsive Design</p>
-                  </div>
-                  <div class="cv-section">
-                    <h2>Formation</h2>
-                    <div class="cv-item"><h3 id="previewEducation">Licence Informatique - Université de Paris</h3><p class="cv-meta" id="previewEduDate">2021</p></div>
-                  </div>
+                  <div class="cv-section"><h2>Contact</h2><p id="previewEmail">jean.dupont@email.com</p><p id="previewPhone">06 12 34 56 78</p><p id="previewAddress">Paris, France</p><p id="previewWebsite">linkedin.com/in/jeandupont</p></div>
+                  <div class="cv-section"><h2>Compétences</h2><p id="previewSkills">HTML, CSS, JavaScript, React, Git, UI/UX, Responsive Design</p></div>
+                  <div class="cv-section"><h2>Formation</h2><div class="cv-item"><h3 id="previewEducation">Licence Informatique - Université de Paris</h3><p class="cv-meta" id="previewEduDate">2021</p></div></div>
                 </aside>
                 <div>
-                  <div class="cv-section">
-                    <h2>Profil</h2>
-                    <p id="previewSummary">Développeur web passionné, rigoureux et orienté résultats, avec une bonne maîtrise des interfaces modernes, du responsive design et de la création d'applications performantes.</p>
-                  </div>
-                  <div class="cv-section">
-                    <h2>Expérience</h2>
-                    <div class="cv-item">
-                      <h3 id="previewExpRole">Développeur Front-End</h3>
-                      <p class="cv-meta"><span id="previewExpCompany">Agence Web Pro</span> • <span id="previewExpDate">2022 - Présent</span> • <span id="previewExpLocation">Lyon, France</span></p>
-                      <p id="previewExpDescription">Conception d'interfaces web modernes, intégration responsive, optimisation de l'expérience utilisateur et amélioration des performances des sites clients.</p>
-                    </div>
-                  </div>
+                  <div class="cv-section"><h2>Profil</h2><p id="previewSummary">Développeur web passionné, rigoureux et orienté résultats, avec une bonne maîtrise des interfaces modernes, du responsive design et de la création d'applications performantes.</p></div>
+                  <div class="cv-section"><h2>Expérience</h2><div class="cv-item"><h3 id="previewExpRole">Développeur Front-End</h3><p class="cv-meta"><span id="previewExpCompany">Agence Web Pro</span> • <span id="previewExpDate">2022 - Présent</span> • <span id="previewExpLocation">Lyon, France</span></p><p id="previewExpDescription">Conception d'interfaces web modernes, intégration responsive, optimisation de l'expérience utilisateur et amélioration des performances des sites clients.</p></div></div>
+                  <div class="cv-section qr-section"><h2>Référence rapide</h2><div id="qrBox" class="qr-box">CV</div><p class="cv-meta">Code visuel décoratif pour un rendu moderne.</p></div>
                 </div>
               </div>
             </div>
@@ -220,13 +187,14 @@
       </div>
     </section>
 
-    <section id="conseils">
+    <section id="lettre">
       <div class="container">
-        <div class="section-header"><span class="section-badge">Conseils</span><h2 class="section-title">Un bon CV doit être clair, ciblé et crédible.</h2></div>
-        <div class="conseils-grid">
-          <article class="conseil-card"><h3>Adaptez le titre</h3><p>Mettez le poste exact recherché pour montrer immédiatement votre objectif.</p></article>
-          <article class="conseil-card"><h3>Utilisez des résultats</h3><p>Ajoutez chiffres, volumes, délais, responsabilités et réussites concrètes.</p></article>
-          <article class="conseil-card"><h3>Restez lisible</h3><p>Un CV professionnel doit être propre, aéré et facile à parcourir.</p></article>
+        <div class="section-header"><span class="section-badge">Lettre de motivation</span><h2 class="section-title">Générez une base de lettre en un clic.</h2><p>La lettre reprend automatiquement votre nom, votre profil et le poste recherché.</p></div>
+        <div class="letter-card">
+          <div class="form-grid"><div class="form-group"><label>Entreprise ciblée</label><input id="companyTarget" value="Votre entreprise"></div><div class="form-group"><label>Ville</label><input id="letterCity" value="Niamey"></div></div>
+          <button class="btn btn-primary" id="letterBtn">Générer la lettre</button>
+          <textarea id="letterOutput" class="letter-output" placeholder="Votre lettre apparaîtra ici..."></textarea>
+          <button class="btn btn-secondary" id="copyLetterBtn">Copier la lettre</button>
         </div>
       </div>
     </section>
@@ -235,21 +203,15 @@
       <div class="container">
         <div class="section-header"><span class="section-badge">FAQ</span><h2 class="section-title">Questions fréquentes.</h2></div>
         <div class="faq-grid">
-          <article class="faq-item"><h3>Le site est-il gratuit ?</h3><p>Oui, l’objectif est de créer un CV gratuitement et rapidement.</p></article>
-          <article class="faq-item"><h3>Faut-il créer un compte ?</h3><p>Non, l’utilisateur peut commencer directement sans inscription.</p></article>
-          <article class="faq-item"><h3>Comment obtenir le PDF ?</h3><p>Il suffit de cliquer sur “Télécharger en PDF”, puis choisir “Enregistrer en PDF”.</p></article>
+          <article class="faq-item"><h3>Le site est-il gratuit ?</h3><p>Oui, il fonctionne sans paiement et sans inscription.</p></article>
+          <article class="faq-item"><h3>Les données sont-elles envoyées ?</h3><p>Non, elles restent dans le navigateur grâce au stockage local.</p></article>
+          <article class="faq-item"><h3>Comment télécharger le PDF ?</h3><p>Cliquez sur le bouton PDF puis choisissez “Enregistrer en PDF”.</p></article>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="container">
-      <a href="#accueil" class="logo"><div class="logo-icon">CV</div><span>Gratuit Pro</span></a>
-      <p>Créer un CV professionnel, gratuitement, simplement et rapidement.</p>
-    </div>
-  </footer>
-
+  <footer><div class="container"><a href="#accueil" class="logo"><div class="logo-icon">CV</div><span>Gratuit Pro</span></a><p>Un générateur de CV moderne, gratuit et sans inscription.</p></div></footer>
   <script src="assets/js/app.js"></script>
 </body>
 </html>
