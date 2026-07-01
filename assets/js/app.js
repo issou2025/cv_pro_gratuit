@@ -1,158 +1,24 @@
-/* CV Gratuit Pro — interactions modernes */
+/* CV Gratuit Pro — 14 fonctionnalités statiques modernes */
+const fields={fullname:'previewName',jobtitle:'previewJob',email:'previewEmail',phone:'previewPhone',address:'previewAddress',website:'previewWebsite',summary:'previewSummary',skills:'previewSkills',education:'previewEducation',eduDate:'previewEduDate',expRole:'previewExpRole',expCompany:'previewExpCompany',expDate:'previewExpDate',expLocation:'previewExpLocation',expDescription:'previewExpDescription'};
+const defaults={};
+const $=id=>document.getElementById(id);
 
-const fields = {
-  fullname: 'previewName',
-  jobtitle: 'previewJob',
-  email: 'previewEmail',
-  phone: 'previewPhone',
-  address: 'previewAddress',
-  website: 'previewWebsite',
-  summary: 'previewSummary',
-  skills: 'previewSkills',
-  education: 'previewEducation',
-  eduDate: 'previewEduDate',
-  expRole: 'previewExpRole',
-  expCompany: 'previewExpCompany',
-  expDate: 'previewExpDate',
-  expLocation: 'previewExpLocation',
-  expDescription: 'previewExpDescription'
-};
-
-const defaults = {};
-
-function $(id) {
-  return document.getElementById(id);
-}
-
-function updatePreview(inputId) {
-  const input = $(inputId);
-  const preview = $(fields[inputId]);
-  if (!input || !preview) return;
-  const value = input.value.trim();
-  preview.textContent = value || '—';
-}
-
-function saveData() {
-  const data = {};
-  Object.keys(fields).forEach((id) => {
-    const input = $(id);
-    if (input) data[id] = input.value;
-  });
-  localStorage.setItem('cv-gratuit-pro-data', JSON.stringify(data));
-}
-
-function loadData() {
-  try {
-    const saved = JSON.parse(localStorage.getItem('cv-gratuit-pro-data') || '{}');
-    Object.keys(fields).forEach((id) => {
-      const input = $(id);
-      if (!input) return;
-      defaults[id] = input.value;
-      if (saved[id]) input.value = saved[id];
-      updatePreview(id);
-    });
-  } catch (error) {
-    console.warn('Données locales non chargées', error);
-  }
-}
-
-function resetData() {
-  Object.keys(fields).forEach((id) => {
-    const input = $(id);
-    if (!input) return;
-    input.value = defaults[id] || '';
-    updatePreview(id);
-  });
-  localStorage.removeItem('cv-gratuit-pro-data');
-}
-
-function setupGenerator() {
-  Object.keys(fields).forEach((id) => {
-    const input = $(id);
-    if (!input) return;
-    input.addEventListener('input', () => {
-      updatePreview(id);
-      saveData();
-    });
-  });
-
-  const printBtn = $('printBtn');
-  if (printBtn) {
-    printBtn.addEventListener('click', () => {
-      document.body.classList.add('printing-cv');
-      setTimeout(() => window.print(), 120);
-      setTimeout(() => document.body.classList.remove('printing-cv'), 800);
-    });
-  }
-
-  const resetBtn = $('resetBtn');
-  if (resetBtn) resetBtn.addEventListener('click', resetData);
-}
-
-function setupNavigation() {
-  const hamburger = $('hamburger-toggle');
-  const nav = $('nav-links');
-  if (hamburger && nav) {
-    hamburger.addEventListener('click', () => {
-      nav.classList.toggle('active');
-      document.body.classList.toggle('menu-open');
-    });
-  }
-
-  document.querySelectorAll('.nav-link').forEach((link) => {
-    link.addEventListener('click', () => {
-      document.querySelectorAll('.nav-link').forEach((item) => item.classList.remove('active'));
-      link.classList.add('active');
-      if (nav) nav.classList.remove('active');
-      document.body.classList.remove('menu-open');
-    });
-  });
-}
-
-function setupScrollSpy() {
-  const sections = [...document.querySelectorAll('main section[id]')];
-  const links = [...document.querySelectorAll('.nav-link')];
-  if (!sections.length || !links.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const id = entry.target.getAttribute('id');
-      links.forEach((link) => {
-        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-      });
-    });
-  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-
-  sections.forEach((section) => observer.observe(section));
-}
-
-function setupReveal() {
-  const items = document.querySelectorAll('.advantage-card, .template-card, .conseil-card, .faq-item, .form-panel, .preview-panel, .stat');
-  if (!items.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-
-  items.forEach((item, index) => {
-    item.style.opacity = '0';
-    item.style.transform = 'translateY(18px)';
-    item.style.transition = `opacity .55s ease ${index * 35}ms, transform .55s ease ${index * 35}ms`;
-    observer.observe(item);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadData();
-  setupGenerator();
-  setupNavigation();
-  setupScrollSpy();
-  setupReveal();
-});
+function collectData(){const data={};Object.keys(fields).forEach(id=>{const input=$(id);if(input)data[id]=input.value});const photo=$('previewPhoto');if(photo&&!photo.hidden)data.photo=photo.src;data.template=document.querySelector('.chip.active')?.dataset.template||'pro';data.color=getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();data.dark=document.body.classList.contains('dark');return data}
+function updatePreview(id){const input=$(id),preview=$(fields[id]);if(!input||!preview)return;preview.textContent=input.value.trim()||'—'}
+function saveData(){localStorage.setItem('cv-gratuit-pro-data',JSON.stringify(collectData()))}
+function loadData(){try{const saved=JSON.parse(localStorage.getItem('cv-gratuit-pro-data')||'{}');Object.keys(fields).forEach(id=>{const input=$(id);if(!input)return;defaults[id]=input.value;if(saved[id])input.value=saved[id];updatePreview(id)});if(saved.photo){const p=$('previewPhoto');p.src=saved.photo;p.hidden=false}if(saved.color)setAccent(saved.color,false);if(saved.dark)document.body.classList.add('dark');if(saved.template)setTemplate(saved.template,false);updateQuality()}catch(e){console.warn('Données locales non chargées',e)}}
+function resetData(){Object.keys(fields).forEach(id=>{const input=$(id);if(!input)return;input.value=defaults[id]||'';updatePreview(id)});const p=$('previewPhoto');if(p){p.hidden=true;p.removeAttribute('src')}localStorage.removeItem('cv-gratuit-pro-data');setTemplate('pro',false);setAccent('#2563eb',false);updateQuality()}
+function getFilledCount(){let filled=0,total=Object.keys(fields).length;Object.keys(fields).forEach(id=>{if(($(id)?.value||'').trim().length>2)filled++});return{filled,total}}
+function updateQuality(){const {filled,total}=getFilledCount();let score=Math.round((filled/total)*78);const summary=($('summary')?.value||'');const skills=($('skills')?.value||'');const exp=($('expDescription')?.value||'');if(summary.length>90)score+=7;if(skills.split(',').length>=5)score+=7;if(/\d|%|ans|année|projet|chantier|client/i.test(exp))score+=8;score=Math.min(100,score);const completion=Math.round((filled/total)*100);if($('scoreValue'))$('scoreValue').textContent=score;if($('heroScore'))$('heroScore').textContent=score;if($('completionValue'))$('completionValue').textContent=completion+'%';if($('completionBar'))$('completionBar').style.width=completion+'%';renderTips(score,completion)}
+function renderTips(score,completion){const tips=[];if(!($('summary')?.value||'').trim())tips.push('Ajoutez un résumé professionnel clair.');if((($('summary')?.value||'').length)<90)tips.push('Développez le profil avec votre valeur ajoutée.');if((($('skills')?.value||'').split(',').length)<5)tips.push('Ajoutez au moins 5 compétences séparées par des virgules.');if(!/\d|%|ans|année|projet|chantier|client/i.test($('expDescription')?.value||''))tips.push('Ajoutez des chiffres ou résultats dans l’expérience.');if(completion<90)tips.push('Complétez tous les champs pour augmenter le score.');if(score>=85)tips.push('Très bon CV : vous pouvez exporter en PDF.');const ul=$('tipsList');if(ul)ul.innerHTML=tips.map(t=>`<li>${t}</li>`).join('')}
+function setTemplate(name,save=true){const cv=$('cv-preview');if(!cv)return;cv.classList.remove('cv-template-pro','cv-template-modern','cv-template-minimal');cv.classList.add(`cv-template-${name}`);document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('active',b.dataset.template===name));if($('heroTemplate'))$('heroTemplate').textContent=name==='modern'?'Moderne':name==='minimal'?'Minimaliste':'Professionnel';if(save)saveData()}
+function setAccent(color,save=true){document.documentElement.style.setProperty('--primary',color);document.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('active',d.dataset.color===color));if(save)saveData()}
+function exportJSON(){const blob=new Blob([JSON.stringify(collectData(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cv-gratuit-pro.json';a.click();URL.revokeObjectURL(a.href)}
+function importJSON(file){const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);Object.keys(fields).forEach(id=>{if(data[id]&&$(id)){ $(id).value=data[id];updatePreview(id)}});if(data.photo){const p=$('previewPhoto');p.src=data.photo;p.hidden=false}if(data.template)setTemplate(data.template,false);if(data.color)setAccent(data.color,false);saveData();updateQuality()}catch(e){alert('Fichier JSON invalide.')}};reader.readAsText(file)}
+function setupPhoto(){const input=$('photoInput');if(!input)return;input.addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const p=$('previewPhoto');p.src=reader.result;p.hidden=false;saveData()};reader.readAsDataURL(file)})}
+function generateLetter(){const name=$('fullname')?.value||'Votre nom';const job=$('jobtitle')?.value||'le poste proposé';const company=$('companyTarget')?.value||'votre entreprise';const city=$('letterCity')?.value||'';const summary=$('summary')?.value||'';const text=`${city}, le ${new Date().toLocaleDateString('fr-FR')}\n\nMadame, Monsieur,\n\nJe vous adresse ma candidature pour le poste de ${job} au sein de ${company}. Mon profil correspond à une démarche professionnelle sérieuse, orientée résultats et adaptée aux exigences du poste.\n\n${summary}\n\nJe serais heureux de pouvoir échanger avec vous afin de présenter plus en détail ma motivation, mes compétences et ma capacité à contribuer efficacement à vos projets.\n\nVeuillez agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n${name}`;if($('letterOutput'))$('letterOutput').value=text}
+function setupGenerator(){Object.keys(fields).forEach(id=>{const input=$(id);if(!input)return;input.addEventListener('input',()=>{updatePreview(id);saveData();updateQuality()})});$('printBtn')?.addEventListener('click',()=>setTimeout(()=>window.print(),100));$('resetBtn')?.addEventListener('click',resetData);$('exportBtn')?.addEventListener('click',exportJSON);$('importInput')?.addEventListener('change',e=>{if(e.target.files[0])importJSON(e.target.files[0])});document.querySelectorAll('.chip').forEach(btn=>btn.addEventListener('click',()=>setTemplate(btn.dataset.template)));document.querySelectorAll('.color-dot').forEach(btn=>btn.addEventListener('click',()=>setAccent(btn.dataset.color)));$('letterBtn')?.addEventListener('click',generateLetter);$('copyLetterBtn')?.addEventListener('click',()=>{const out=$('letterOutput');out?.select();navigator.clipboard?.writeText(out?.value||'')});setupPhoto()}
+function setupNavigation(){const hamburger=$('hamburger-toggle'),nav=$('nav-links');hamburger?.addEventListener('click',()=>nav?.classList.toggle('active'));document.querySelectorAll('.nav-link').forEach(link=>link.addEventListener('click',()=>{document.querySelectorAll('.nav-link').forEach(i=>i.classList.remove('active'));link.classList.add('active');nav?.classList.remove('active')}));$('themeToggle')?.addEventListener('click',()=>{document.body.classList.toggle('dark');$('themeToggle').textContent=document.body.classList.contains('dark')?'☀️':'🌙';saveData()})}
+function setupScrollSpy(){const sections=[...document.querySelectorAll('main section[id]')],links=[...document.querySelectorAll('.nav-link')];const obs=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){const id=entry.target.id;links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')===`#${id}`))}}),{rootMargin:'-40% 0px -55% 0px'});sections.forEach(s=>obs.observe(s))}
+function setupReveal(){const items=document.querySelectorAll('.feature-card,.faq-item,.form-panel,.preview-panel,.stat,.studio-panel,.letter-card');const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target)}}),{threshold:.12});items.forEach((item,i)=>{item.style.opacity='0';item.style.transform='translateY(18px)';item.style.transition=`opacity .55s ease ${i*25}ms,transform .55s ease ${i*25}ms`;obs.observe(item)})}
+document.addEventListener('DOMContentLoaded',()=>{loadData();setupGenerator();setupNavigation();setupScrollSpy();setupReveal();updateQuality()});
