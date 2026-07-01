@@ -1,191 +1,46 @@
 (() => {
-  const $ = (id) => document.getElementById(id);
-  const clean = (text) => (text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9+#.\s-]/g, ' ');
-  const fieldIds = ['fullname','jobtitle','email','phone','address','website','summary','skills','education','eduDate','expRole','expCompany','expDate','expLocation','expDescription'];
-  const getValue = (id) => ($(id)?.value || '').trim();
-  const cvText = () => fieldIds.map(getValue).join(' ');
-  const stop = new Set(['avec','pour','dans','vous','nous','poste','profil','mission','missions','emploi','candidat','recherche','travail','experience','competence','competences','formation','entreprise','votre','notre','sans','plus','moins','afin','ainsi','les','des','une','sur','aux','par','est','sont']);
-  const words = (text) => [...new Set(clean(text).split(/\s+/).filter((w) => w.length > 3 && !stop.has(w)))];
-
-  const proFeatures = [
-    'Scanner ATS local', 'Matching avec offre', 'Mots-clés manquants', 'Banque de phrases', 'Objectif professionnel',
-    'Résumé automatique', 'Email de candidature', 'Pitch recruteur', 'Questions d’entretien', 'Checklist avant envoi',
-    'Versions multiples', 'Historique local', 'Score impact', 'Score lisibilité', 'Score contact',
-    'Nuage de compétences', 'Verbes d’action', 'Reformulation expérience', 'Analyse longueur', 'Analyse chiffres',
-    'Analyse portfolio', 'Analyse téléphone', 'Analyse email', 'Analyse formation', 'Analyse compétences',
-    'Analyse cohérence poste', 'Conseils recruteur', 'Plan d’amélioration', 'Bio LinkedIn', 'Bio portfolio',
-    'Message WhatsApp recruteur', 'Message LinkedIn', 'Lettre courte', 'Lettre formelle', 'Lettre spontanée',
-    'Export JSON', 'Import JSON', 'Export PDF', 'Mode sombre', 'Palettes couleur',
-    'Modèles CV', 'Photo locale', 'QR contact visuel', 'Sauvegarde navigateur', 'Interface mobile'
-  ];
-
-  function inject() {
-    if ($('pro-suite')) return;
-    const target = document.querySelector('#lettre') || document.querySelector('footer');
-    const section = document.createElement('section');
-    section.id = 'pro-suite';
-    section.innerHTML = `
-      <div class="container">
-        <div class="section-header">
-          <span class="section-badge">Suite Pro candidature</span>
-          <h2 class="section-title">Un espace complet pour créer, analyser et renforcer une candidature.</h2>
-          <p>Collez une offre d’emploi, comparez votre CV, récupérez les mots-clés, générez des textes de candidature et suivez vos versions.</p>
-        </div>
-        <div class="pro-dashboard">
-          <div class="pro-tile"><span>Score global</span><strong id="proGlobalScore">0</strong></div>
-          <div class="pro-tile"><span>Matching offre</span><strong id="proMatchScore">0%</strong></div>
-          <div class="pro-tile"><span>Niveau ATS</span><strong id="proAtsLevel">—</strong></div>
-          <div class="pro-tile"><span>Compétences</span><strong id="proSkillCount">0</strong></div>
-        </div>
-        <div class="pro-feature-wall">${proFeatures.map((f, i) => `<article class="pro-pill"><b>${String(i + 1).padStart(2, '0')}</b><span>${f}</span></article>`).join('')}</div>
-        <div class="pro-layout">
-          <article class="pro-card">
-            <h3>Analyse d’offre d’emploi</h3>
-            <textarea id="proJobOffer" placeholder="Collez ici l’offre d’emploi complète : missions, profil recherché, compétences, logiciels, niveau, expériences..."></textarea>
-            <div class="generator-actions">
-              <button class="btn btn-primary" id="proAnalyzeBtn">Analyser</button>
-              <button class="btn btn-secondary" id="proBoostBtn">Renforcer l’expérience</button>
-              <button class="btn btn-outline" id="proSaveBtn">Sauver version</button>
-            </div>
-          </article>
-          <article class="pro-card">
-            <h3>Diagnostic candidature</h3>
-            <div class="pro-score-grid">
-              <div class="metric big"><span>ATS</span><strong id="proAtsScore">0</strong></div>
-              <div class="metric big"><span>Match</span><strong id="proMatchPercent">0%</strong></div>
-              <div class="metric big"><span>Impact</span><strong id="proImpactScore">0</strong></div>
-            </div>
-            <div id="proKeywordCloud" class="keyword-cloud"></div>
-            <div id="proDiagnostic" class="diagnostic">Collez une annonce puis lancez l’analyse.</div>
-          </article>
-        </div>
-        <div class="pro-layout second">
-          <article class="pro-card"><h3>Pitch recruteur</h3><textarea id="proPitch"></textarea><button class="btn btn-secondary" data-copy-pro="proPitch">Copier</button></article>
-          <article class="pro-card"><h3>Email de candidature</h3><textarea id="proEmail"></textarea><button class="btn btn-secondary" data-copy-pro="proEmail">Copier</button></article>
-        </div>
-        <div class="pro-layout second">
-          <article class="pro-card"><h3>Questions d’entretien</h3><textarea id="proInterview"></textarea><button class="btn btn-secondary" data-copy-pro="proInterview">Copier</button></article>
-          <article class="pro-card"><h3>Versions enregistrées</h3><div id="proVersions" class="versions-list"></div></article>
-        </div>
-      </div>`;
-    target.parentNode.insertBefore(section, target);
-
-    const nav = $('nav-links');
-    if (nav && !document.querySelector('a[href="#pro-suite"]')) {
-      const link = document.createElement('a');
-      link.href = '#pro-suite';
-      link.className = 'nav-link';
-      link.textContent = 'Suite Pro';
-      nav.appendChild(link);
-    }
-  }
-
-  function scoreBase() {
-    let score = 0;
-    if (getValue('email').includes('@')) score += 12;
-    if (getValue('phone').length > 6) score += 12;
-    if (getValue('summary').length > 90) score += 18;
-    if (getValue('skills').split(',').filter(Boolean).length >= 5) score += 18;
-    if (/\d|%|ans|année|annee|projet|client|budget|équipe|equipe/i.test(getValue('expDescription'))) score += 20;
-    if (getValue('website').length > 5) score += 10;
-    if (getValue('education').length > 5) score += 10;
-    return Math.min(100, score);
-  }
-
-  function analyze() {
-    const offerWords = words(getValue('proJobOffer'));
-    const resumeWords = words(cvText());
-    const found = offerWords.filter((w) => resumeWords.includes(w));
-    const missing = offerWords.filter((w) => !resumeWords.includes(w)).slice(0, 24);
-    const match = offerWords.length ? Math.round((found.length / offerWords.length) * 100) : 0;
-    const ats = scoreBase();
-    const impact = Math.min(100, Math.round((ats + match) / 2) + (/\d|%/.test(getValue('expDescription')) ? 8 : 0));
-
-    setText('proAtsScore', ats);
-    setText('proMatchPercent', match + '%');
-    setText('proImpactScore', impact);
-    setText('proGlobalScore', Math.round((ats + impact + match) / 3));
-    setText('proMatchScore', match + '%');
-    setText('proAtsLevel', ats > 82 ? 'Excellent' : ats > 65 ? 'Bon' : 'À renforcer');
-    setText('proSkillCount', getValue('skills').split(',').filter(Boolean).length);
-
-    const cloud = $('proKeywordCloud');
-    if (cloud) {
-      cloud.innerHTML = (missing.length ? missing : found.slice(0, 18)).map((k) => `<span class="keyword ${missing.includes(k) ? 'missing' : 'found'}">${k}</span>`).join('');
-    }
-
-    const diagnostic = [];
-    diagnostic.push(match >= 70 ? 'Votre CV reprend bien les mots-clés de l’offre.' : 'Votre CV doit reprendre davantage les termes exacts de l’offre.');
-    diagnostic.push(ats >= 75 ? 'La structure est claire pour un tri automatique.' : 'Renforcez le résumé, les compétences, le contact et les résultats mesurables.');
-    diagnostic.push(missing.length ? 'Mots-clés à intégrer : ' + missing.slice(0, 10).join(', ') + '.' : 'Aucun mot-clé prioritaire manquant détecté.');
-    $('proDiagnostic').innerHTML = diagnostic.map((d) => `<p>${d}</p>`).join('');
-
-    generateTexts(match, missing);
-  }
-
-  function generateTexts(match, missing) {
-    const name = getValue('fullname') || 'Votre nom';
-    const job = getValue('jobtitle') || 'ce poste';
-    const role = getValue('expRole') || 'professionnel';
-    const skills = getValue('skills').split(',').map((s) => s.trim()).filter(Boolean).slice(0, 5).join(', ');
-    setValue('proPitch', `Bonjour, je suis ${name}. Mon profil de ${role} est orienté ${job}. Je peux apporter une contribution concrète grâce à mes compétences en ${skills || 'organisation, analyse et exécution'}. Le niveau de correspondance estimé avec l’offre est de ${match}%. ${missing.length ? 'Je peux renforcer le CV avec : ' + missing.slice(0, 5).join(', ') + '.' : ''}`);
-    setValue('proEmail', `Bonjour,\n\nVeuillez trouver ci-joint ma candidature pour le poste de ${job}. Mon profil correspond aux attentes du poste et je serais heureux d’échanger avec vous.\n\nCordialement,\n${name}`);
-    const qs = ['Présentez votre parcours en 60 secondes.', 'Quel résultat concret pouvez-vous prouver ?', 'Pourquoi ce poste vous intéresse-t-il ?', 'Comment organisez-vous vos priorités ?', ...missing.slice(0, 5).map((k) => `Comment démontrez-vous votre maîtrise de ${k} ?`)];
-    setValue('proInterview', qs.join('\n'));
-  }
-
-  function boostExperience() {
-    const exp = $('expDescription');
-    if (!exp) return;
-    const role = getValue('expRole') || 'poste';
-    const company = getValue('expCompany') || 'l’entreprise';
-    exp.value = `Dans le cadre du poste de ${role} chez ${company}, j’ai contribué à la réalisation de missions clés, à l’amélioration de la qualité des livrables, à l’optimisation des méthodes de travail et au respect des délais. Résultat : meilleure organisation, exécution plus fiable et impact mesurable sur les projets confiés.`;
-    exp.dispatchEvent(new Event('input', { bubbles: true }));
-    analyze();
-  }
-
-  function saveVersion() {
-    const versions = JSON.parse(localStorage.getItem('cv-pro-suite-versions') || '[]');
-    const item = { date: new Date().toLocaleString('fr-FR'), name: getValue('fullname') || 'CV', job: getValue('jobtitle') || '', values: {} };
-    fieldIds.forEach((id) => item.values[id] = getValue(id));
-    versions.unshift(item);
-    localStorage.setItem('cv-pro-suite-versions', JSON.stringify(versions.slice(0, 10)));
-    renderVersions();
-  }
-
-  function renderVersions() {
-    const list = $('proVersions');
-    if (!list) return;
-    const versions = JSON.parse(localStorage.getItem('cv-pro-suite-versions') || '[]');
-    list.innerHTML = versions.length ? versions.map((v, i) => `<button class="version-item" data-pro-version="${i}"><strong>${v.name}</strong><span>${v.job}</span><small>${v.date}</small></button>`).join('') : '<p>Aucune version enregistrée.</p>';
-    list.querySelectorAll('[data-pro-version]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const v = versions[Number(btn.dataset.proVersion)];
-        fieldIds.forEach((id) => {
-          if ($(id) && v.values[id] !== undefined) {
-            $(id).value = v.values[id];
-            $(id).dispatchEvent(new Event('input', { bubbles: true }));
-          }
-        });
-      });
-    });
-  }
-
-  function setText(id, value) { if ($(id)) $(id).textContent = value; }
-  function setValue(id, value) { if ($(id)) $(id).value = value; }
-
-  function bind() {
-    $('proAnalyzeBtn')?.addEventListener('click', analyze);
-    $('proBoostBtn')?.addEventListener('click', boostExperience);
-    $('proSaveBtn')?.addEventListener('click', saveVersion);
-    document.querySelectorAll('[data-copy-pro]').forEach((btn) => btn.addEventListener('click', () => navigator.clipboard?.writeText($(btn.dataset.copyPro)?.value || '')));
-    fieldIds.forEach((id) => $(id)?.addEventListener('input', () => setTimeout(analyze, 80)));
-    renderVersions();
-    analyze();
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    inject();
-    bind();
-  });
+  const $ = id => document.getElementById(id);
+  const ids = ['fullname','jobtitle','email','phone','address','website','summary','skills','education','eduDate','expRole','expCompany','expDate','expLocation','expDescription'];
+  const val = id => ($(id)?.value || '').trim();
+  const set = (id, text) => { if ($(id)) $(id).value = text; };
+  const txt = (id, text) => { if ($(id)) $(id).textContent = text; };
+  const clean = s => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9+#.\s-]/g, ' ');
+  const stop = new Set('avec pour dans vous nous poste profil mission missions emploi candidat recherche travail experience competence competences formation entreprise votre notre sans plus moins afin ainsi les des une sur aux par est sont comme cette cela mais donc alors très tres entre aussi avoir être etre'.split(' '));
+  const words = s => [...new Set(clean(s).split(/\s+/).filter(w => w.length > 3 && !stop.has(w)))];
+  const cvText = () => ids.map(val).join(' ');
+  const métiers = {
+    btp:['AutoCAD','Revit','métré','devis','suivi chantier','béton armé','planning','contrôle qualité','sécurité chantier','attachements'],
+    dev:['HTML','CSS','JavaScript','Flutter','API','Git','UI/UX','responsive','base de données','déploiement'],
+    admin:['bureautique','classement','rédaction','accueil','gestion documentaire','planning','archivage','Excel','courrier'],
+    commerce:['prospection','vente','négociation','relation client','reporting','objectif','fidélisation','présentation produit'],
+    ong:['terrain','suivi-évaluation','rapportage','logistique','communauté','bailleurs','coordination','sensibilisation'],
+    etudiant:['projet scolaire','stage','motivation','apprentissage','logiciels','travail en équipe','ponctualité','adaptation']
+  };
+  const allFeatures = ['CV ciblé offre','Mode recruteur 10 secondes','Score recruteur','CV par métier','Mode BTP','Banque de phrases','Reformulation pro','Résultats chiffrés','Assistant débutant','Assistant senior','CV international','Traduction FR/EN','Profil LinkedIn','Portfolio rapide','Pack CV+lettre+email','Suivi candidatures','Relance suggérée','Message de relance','Préparation entretien','Simulation entretien','Analyse longueur','Mots répétés','Mots faibles','Fautes fréquentes','Analyse ATS','Comparaison A/B','CV une page','CV détaillé','Titre professionnel','Objectif professionnel','Conseiller de modèle','Choix pays','CV ONG','CV appel d’offres','CV freelance','CV Fiverr/Upwork','Mini-bio pro','Carte numérique','Export image idée','Mode cybercafé','Mode centre formation','Mode recruteur RH','Grille RH','Analyse carrière','Plan amélioration','Compétences par logiciel','Modèles sectoriels','Couleurs par secteur','Script CV vidéo','Slogan pro','Cohérence CV','CV concours','CV académique','Références','Disponibilité','Prétention salariale','CV vendable','Mode ultra simple','Mode premium','Tableau de bord local'];
+  function baseScore(){let s=0;if(val('email').includes('@'))s+=10;if(val('phone').length>6)s+=10;if(val('summary').length>90)s+=15;if(val('skills').split(',').filter(Boolean).length>=5)s+=15;if(/\d|%|ans|année|annee|projet|client|budget|équipe|equipe/i.test(val('expDescription')))s+=20;if(val('website').length>5)s+=10;if(val('education').length>5)s+=10;if(val('jobtitle').length>5)s+=10;return Math.min(100,s)}
+  function inject(){if($('pro-suite')) return; const target=document.querySelector('#lettre')||document.querySelector('footer'); const sec=document.createElement('section'); sec.id='pro-suite'; sec.innerHTML=`
+    <div class="container">
+      <div class="section-header"><span class="section-badge">Plateforme carrière complète</span><h2 class="section-title">Tous les outils pour créer, adapter, envoyer et suivre une candidature.</h2><p>Une suite locale inspirée des plateformes premium : CV ciblé, ATS, métiers, LinkedIn, entretien, suivi, relance, portfolio et contenus prêts à copier.</p></div>
+      <div class="pro-dashboard"><div class="pro-tile"><span>Score CV</span><strong id="proGlobalScore">0</strong></div><div class="pro-tile"><span>Matching</span><strong id="proMatchScore">0%</strong></div><div class="pro-tile"><span>Niveau</span><strong id="proAtsLevel">—</strong></div><div class="pro-tile"><span>Outils</span><strong>60</strong></div></div>
+      <div class="pro-tabs"><button data-tab="analyse" class="active">Analyse</button><button data-tab="metiers">Métiers</button><button data-tab="contenus">Textes</button><button data-tab="entretien">Entretien</button><button data-tab="suivi">Suivi</button><button data-tab="rh">RH</button></div>
+      <div class="pro-panel active" id="tab-analyse"><div class="pro-layout"><article class="pro-card"><h3>CV ciblé selon l’offre</h3><textarea id="proJobOffer" placeholder="Collez ici l’offre d’emploi complète..."></textarea><div class="generator-actions"><button class="btn btn-primary" id="proAnalyzeBtn">Analyser</button><button class="btn btn-secondary" id="proOnePageBtn">Optimiser en 1 page</button><button class="btn btn-outline" id="proSaveBtn">Sauver version</button></div></article><article class="pro-card"><h3>Diagnostic recruteur</h3><div class="pro-score-grid"><div class="metric big"><span>ATS</span><strong id="proAtsScore">0</strong></div><div class="metric big"><span>Match</span><strong id="proMatchPercent">0%</strong></div><div class="metric big"><span>Impact</span><strong id="proImpactScore">0</strong></div></div><div id="proKeywordCloud" class="keyword-cloud"></div><div id="proDiagnostic" class="diagnostic">Collez une annonce puis lancez l’analyse.</div></article></div><div class="pro-feature-wall">${allFeatures.map((f,i)=>`<article class="pro-pill"><b>${String(i+1).padStart(2,'0')}</b><span>${f}</span></article>`).join('')}</div></div>
+      <div class="pro-panel" id="tab-metiers"><div class="pro-card"><h3>Générateur par métier et pays</h3><div class="pro-grid"><select id="proJobFamily"><option value="btp">BTP / Génie civil</option><option value="dev">Développeur</option><option value="admin">Administration</option><option value="commerce">Commerce</option><option value="ong">ONG / Humanitaire</option><option value="etudiant">Étudiant / Débutant</option></select><select id="proCountry"><option>Niger</option><option>France</option><option>Canada</option><option>Sénégal</option><option>Côte d’Ivoire</option><option>Belgique</option><option>Suisse</option></select><button class="btn btn-primary" id="proApplyJobBtn">Adapter le CV</button></div><textarea id="proJobAdvice"></textarea></div></div>
+      <div class="pro-panel" id="tab-contenus"><div class="pro-layout"><article class="pro-card"><h3>Textes prêts à copier</h3><div class="generator-actions"><button class="btn btn-secondary" id="proLinkedinBtn">LinkedIn</button><button class="btn btn-secondary" id="proPortfolioBtn">Portfolio</button><button class="btn btn-secondary" id="proWhatsappBtn">WhatsApp</button><button class="btn btn-secondary" id="proSalaryBtn">Salaire</button></div><textarea id="proTexts"></textarea><button class="btn btn-outline" data-copy-pro="proTexts">Copier</button></article><article class="pro-card"><h3>Banque de phrases professionnelles</h3><div id="phraseBank" class="phrase-bank"></div><textarea id="phraseOutput"></textarea></article></div></div>
+      <div class="pro-panel" id="tab-entretien"><div class="pro-layout"><article class="pro-card"><h3>Questions et réponses d’entretien</h3><textarea id="proInterview"></textarea><button class="btn btn-secondary" data-copy-pro="proInterview">Copier</button></article><article class="pro-card"><h3>Simulation d’entretien</h3><p id="mockQuestion" class="diagnostic">Cliquez pour recevoir une question.</p><textarea id="mockAnswer" placeholder="Écrivez votre réponse ici..."></textarea><div class="generator-actions"><button class="btn btn-primary" id="mockBtn">Nouvelle question</button><button class="btn btn-secondary" id="mockScoreBtn">Noter réponse</button></div><div id="mockScore" class="diagnostic"></div></article></div></div>
+      <div class="pro-panel" id="tab-suivi"><div class="pro-layout"><article class="pro-card"><h3>Suivi des candidatures</h3><div class="pro-grid"><input id="trackCompany" placeholder="Entreprise"><input id="trackPost" placeholder="Poste"><select id="trackStatus"><option>Envoyée</option><option>Relance</option><option>Entretien</option><option>Acceptée</option><option>Refusée</option></select><button class="btn btn-primary" id="addTrackBtn">Ajouter</button></div><div id="trackList" class="versions-list"></div></article><article class="pro-card"><h3>Relance automatique</h3><textarea id="proFollowup"></textarea><button class="btn btn-secondary" id="followupBtn">Générer relance</button></article></div></div>
+      <div class="pro-panel" id="tab-rh"><div class="pro-layout"><article class="pro-card"><h3>Mode recruteur 10 secondes</h3><div id="tenSeconds" class="diagnostic"></div><button class="btn btn-primary" id="tenBtn">Voir comme recruteur</button></article><article class="pro-card"><h3>Grille RH et plan carrière</h3><textarea id="rhOutput"></textarea><button class="btn btn-secondary" id="rhBtn">Générer analyse RH</button></article></div></div>
+    </div>`; target.parentNode.insertBefore(sec,target); const nav=$('nav-links'); if(nav&&!document.querySelector('a[href="#pro-suite"]')){const a=document.createElement('a');a.href='#pro-suite';a.className='nav-link';a.textContent='Suite Pro';nav.appendChild(a)} }
+  function analyze(){const ow=words(val('proJobOffer')), cw=words(cvText()); const found=ow.filter(w=>cw.includes(w)), missing=ow.filter(w=>!cw.includes(w)).slice(0,24); const match=ow.length?Math.round(found.length/ow.length*100):0, ats=baseScore(), impact=Math.min(100,Math.round((ats+match)/2)+(/\d|%/.test(val('expDescription'))?8:0)); txt('proAtsScore',ats);txt('proMatchPercent',match+'%');txt('proImpactScore',impact);txt('proGlobalScore',Math.round((ats+match+impact)/3));txt('proMatchScore',match+'%');txt('proAtsLevel',ats>82?'Excellent':ats>65?'Bon':'À renforcer'); if($('proKeywordCloud')) $('proKeywordCloud').innerHTML=(missing.length?missing:found.slice(0,18)).map(k=>`<span class="keyword ${missing.includes(k)?'missing':'found'}">${k}</span>`).join(''); if($('proDiagnostic')) $('proDiagnostic').innerHTML=[match>70?'CV bien aligné avec l’offre.':'Ajoutez les mots-clés de l’offre dans le résumé, les compétences et l’expérience.',ats>75?'Structure ATS lisible.':'Renforcez contact, résumé, compétences, résultats et titres standards.',missing.length?'Mots-clés utiles : '+missing.slice(0,10).join(', '):'Les mots-clés principaux sont présents.'].map(x=>`<p>${x}</p>`).join(''); generateTexts(match,missing) }
+  function generateTexts(match=0,missing=[]){const name=val('fullname')||'Votre nom', job=val('jobtitle')||'ce poste', role=val('expRole')||'professionnel', skills=val('skills').split(',').map(s=>s.trim()).filter(Boolean).slice(0,6).join(', '); set('proTexts',`TITRE LINKEDIN\n${job} | ${skills}\n\nBIO PROFESSIONNELLE\n${name}, ${role}, spécialisé en ${skills || 'organisation, analyse et exécution'}. Profil orienté résultats, qualité et respect des délais.\n\nEMAIL CANDIDATURE\nBonjour, veuillez trouver ci-joint ma candidature pour le poste de ${job}. Mon profil correspond aux attentes du poste et je serais heureux d’échanger avec vous.\n\nMESSAGE WHATSAPP\nBonjour, je vous contacte concernant le poste de ${job}. Puis-je vous transmettre mon CV ?\n\nPITCH RECRUTEUR\nBonjour, je suis ${name}. Mon profil correspond à ${match}% à l’offre analysée. ${missing.length?'Je peux renforcer mon CV avec : '+missing.slice(0,5).join(', '):''}`); set('proInterview',['Présentez votre parcours en 60 secondes.','Quel résultat concret avez-vous obtenu ?','Pourquoi ce poste vous intéresse-t-il ?','Comment gérez-vous les priorités ?','Quelle difficulté avez-vous résolue ?',...missing.slice(0,5).map(k=>'Comment démontrez-vous votre maîtrise de '+k+' ?')].join('\n')) }
+  function applyJob(){const f=$('proJobFamily')?.value||'btp', country=$('proCountry')?.value||'Niger', list=métiers[f]||métiers.btp; const title={btp:'Technicien / Ingénieur Génie Civil',dev:'Développeur Web et Mobile',admin:'Assistant Administratif',commerce:'Commercial / Chargé clientèle',ong:'Agent Projet ONG / Humanitaire',etudiant:'Jeune diplômé motivé'}[f]; if($('jobtitle')){$('jobtitle').value=title;$('jobtitle').dispatchEvent(new Event('input',{bubbles:true}))} if($('skills')){$('skills').value=list.join(', ');$('skills').dispatchEvent(new Event('input',{bubbles:true}))} set('proJobAdvice',`Format conseillé pour ${country}: titre clair, compétences visibles, expériences avec résultats, disponibilité, mobilité, langues et contact fiable.\nCompétences recommandées : ${list.join(', ')}.`) }
+  function phraseBank(){const phrases=['Coordination des équipes et suivi quotidien des tâches.','Contrôle qualité des livrables et respect des délais.','Optimisation des méthodes de travail et amélioration de la productivité.','Gestion des priorités dans un environnement exigeant.','Réalisation de rapports clairs pour faciliter la décision.','Participation active à la satisfaction client et au suivi des demandes.']; if($('phraseBank')) $('phraseBank').innerHTML=phrases.map(p=>`<button class="phrase-btn">${p}</button>`).join(''); document.querySelectorAll('.phrase-btn').forEach(b=>b.onclick=()=>set('phraseOutput',(val('phraseOutput')?val('phraseOutput')+'\n':'')+b.textContent)) }
+  function onePage(){['summary','expDescription'].forEach(id=>{if($(id)){$(id).value=val(id).split('.').slice(0,2).join('. ') + '.'; $(id).dispatchEvent(new Event('input',{bubbles:true}))}})}
+  function saveVersion(){const arr=JSON.parse(localStorage.getItem('cv-tracker-versions')||'[]'); const o={date:new Date().toLocaleString('fr-FR'),name:val('fullname'),job:val('jobtitle'),values:{}}; ids.forEach(id=>o.values[id]=val(id)); arr.unshift(o); localStorage.setItem('cv-tracker-versions',JSON.stringify(arr.slice(0,12))); alert('Version enregistrée localement')}
+  function addTrack(){const arr=JSON.parse(localStorage.getItem('cv-candidatures')||'[]'); arr.unshift({company:val('trackCompany'),post:val('trackPost'),status:val('trackStatus'),date:new Date().toLocaleDateString('fr-FR')}); localStorage.setItem('cv-candidatures',JSON.stringify(arr)); renderTrack()}
+  function renderTrack(){const arr=JSON.parse(localStorage.getItem('cv-candidatures')||'[]'); if($('trackList')) $('trackList').innerHTML=arr.map(x=>`<div class="version-item"><strong>${x.company||'Entreprise'}</strong><span>${x.post||'Poste'} — ${x.status}</span><small>${x.date}</small></div>`).join('')||'<p>Aucune candidature suivie.</p>'}
+  function followup(){set('proFollowup',`Bonjour,\n\nJe me permets de revenir vers vous concernant ma candidature au poste de ${val('jobtitle')||'...'} envoyée récemment. Je reste disponible pour tout complément d’information ou entretien.\n\nCordialement,\n${val('fullname')||'Votre nom'}`)}
+  function tenSec(){if($('tenSeconds')) $('tenSeconds').innerHTML=`<p><b>Nom :</b> ${val('fullname')||'—'}</p><p><b>Poste :</b> ${val('jobtitle')||'—'}</p><p><b>Compétences fortes :</b> ${val('skills').split(',').slice(0,5).join(', ')}</p><p><b>Verdict :</b> ${baseScore()>75?'Le profil donne envie d’être contacté.':'Le profil doit montrer plus vite ses résultats.'}</p>`}
+  function rh(){set('rhOutput',`GRILLE RH\nPrésentation : ${baseScore()>70?'bonne':'à renforcer'}\nContact : ${val('email').includes('@')?'valide':'à corriger'}\nCompétences : ${val('skills').split(',').filter(Boolean).length} éléments\nExpérience : ${/\d|%|projet|client/i.test(val('expDescription'))?'avec indicateur':'ajouter des résultats'}\n\nPLAN D’AMÉLIORATION\n1. Adapter le titre au poste.\n2. Ajouter 5 mots-clés de l’offre.\n3. Chiffrer l’expérience.\n4. Préparer 5 réponses d’entretien.\n5. Relancer après 7 jours.`)}
+  function bind(){document.querySelectorAll('.pro-tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.pro-tabs button,.pro-panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('tab-'+b.dataset.tab)?.classList.add('active')}); $('proAnalyzeBtn')?.addEventListener('click',analyze);$('proOnePageBtn')?.addEventListener('click',onePage);$('proSaveBtn')?.addEventListener('click',saveVersion);$('proApplyJobBtn')?.addEventListener('click',applyJob);$('addTrackBtn')?.addEventListener('click',addTrack);$('followupBtn')?.addEventListener('click',followup);$('tenBtn')?.addEventListener('click',tenSec);$('rhBtn')?.addEventListener('click',rh);$('mockBtn')?.addEventListener('click',()=>txt('mockQuestion',['Parlez-moi de vous.','Pourquoi vous choisir ?','Quelle est votre plus grande réussite ?','Comment gérez-vous la pression ?'][Math.floor(Math.random()*4)]));$('mockScoreBtn')?.addEventListener('click',()=>txt('mockScore',val('mockAnswer').length>120?'Réponse claire et détaillée.':'Réponse trop courte : ajoutez un exemple concret.'));document.querySelectorAll('[data-copy-pro]').forEach(b=>b.onclick=()=>navigator.clipboard?.writeText(val(b.dataset.copyPro)));['proLinkedinBtn','proPortfolioBtn','proWhatsappBtn','proSalaryBtn'].forEach(id=>$(id)?.addEventListener('click',()=>generateTexts(0,[]))); ids.forEach(id=>$(id)?.addEventListener('input',()=>setTimeout(analyze,80))); phraseBank();renderTrack();analyze();tenSec();rh()}
+  document.addEventListener('DOMContentLoaded',()=>{inject();bind()});
 })();
