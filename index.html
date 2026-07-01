@@ -37,6 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/pro-tools.css">
   <link rel="stylesheet" href="assets/css/print.css" media="print">
 
   <script type="application/ld+json">
@@ -52,18 +53,7 @@
         "inLanguage": "fr-FR",
         "description": "Générateur de CV gratuit en ligne avec modèles modernes, aperçu en direct, score CV, conseils, lettre de motivation et export PDF.",
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
-        "featureList": [
-          "Création de CV gratuit",
-          "Aperçu en direct",
-          "Modèles de CV modernes",
-          "Score CV dynamique",
-          "Lettre de motivation",
-          "Export PDF",
-          "Import et export JSON",
-          "Sauvegarde locale",
-          "Mode sombre",
-          "Personnalisation des couleurs"
-        ]
+        "featureList": ["Création de CV gratuit", "Aperçu en direct", "Modèles de CV modernes", "Score CV dynamique", "Lettre de motivation", "Export PDF", "Import et export JSON", "Sauvegarde locale", "Mode sombre", "Personnalisation des couleurs", "Analyse ATS", "Matching avec offre", "Pitch recruteur", "Questions d’entretien"]
       },
       {
         "@type": "FAQPage",
@@ -118,7 +108,7 @@
           <div class="hero-stats">
             <div class="stat"><strong>0€</strong><span>Créateur de CV gratuit</span></div>
             <div class="stat"><strong>PDF</strong><span>CV prêt à télécharger</span></div>
-            <div class="stat"><strong>SEO</strong><span>CV clair et professionnel</span></div>
+            <div class="stat"><strong>Pro</strong><span>Analyse candidature</span></div>
           </div>
         </div>
 
@@ -171,122 +161,17 @@
           <h2 class="section-title">Remplissez vos informations et obtenez un CV professionnel.</h2>
           <p>Ce générateur de CV gratuit aide les étudiants, techniciens, ingénieurs, développeurs, commerciaux et profils administratifs à créer un CV clair et moderne.</p>
         </div>
-
-        <div class="studio-panel">
-          <div class="studio-metrics">
-            <div class="metric"><span>Score CV</span><strong id="scoreValue">0</strong></div>
-            <div class="metric"><span>Complétion</span><strong id="completionValue">0%</strong></div>
-            <div class="progress-wrap"><div class="progress-bar" id="completionBar"></div></div>
-          </div>
-          <div class="tool-row">
-            <button class="chip active" data-template="pro">Professionnel</button>
-            <button class="chip" data-template="modern">Moderne</button>
-            <button class="chip" data-template="minimal">Minimaliste</button>
-            <button class="color-dot active" data-color="#2563eb" style="--dot:#2563eb" aria-label="Couleur bleue"></button>
-            <button class="color-dot" data-color="#7c3aed" style="--dot:#7c3aed" aria-label="Couleur violette"></button>
-            <button class="color-dot" data-color="#0f766e" style="--dot:#0f766e" aria-label="Couleur verte"></button>
-            <button class="color-dot" data-color="#ea580c" style="--dot:#ea580c" aria-label="Couleur orange"></button>
-          </div>
-        </div>
-
-        <div class="generator-layout">
-          <div class="form-panel">
-            <div class="form-section">
-              <h3>Informations personnelles</h3>
-              <div class="form-grid">
-                <div class="form-group"><label for="fullname">Nom complet</label><input id="fullname" value="Jean Dupont" autocomplete="name"></div>
-                <div class="form-group"><label for="jobtitle">Poste recherché</label><input id="jobtitle" value="Développeur Web Fullstack"></div>
-                <div class="form-group"><label for="email">Email</label><input id="email" value="jean.dupont@email.com" autocomplete="email"></div>
-                <div class="form-group"><label for="phone">Téléphone</label><input id="phone" value="06 12 34 56 78" autocomplete="tel"></div>
-                <div class="form-group"><label for="address">Adresse</label><input id="address" value="Paris, France" autocomplete="address-level2"></div>
-                <div class="form-group"><label for="website">LinkedIn / Portfolio</label><input id="website" value="linkedin.com/in/jeandupont"></div>
-              </div>
-              <div class="form-group"><label for="photoInput">Photo de profil</label><input id="photoInput" type="file" accept="image/*"></div>
-            </div>
-
-            <div class="form-section">
-              <h3>Profil professionnel</h3>
-              <div class="form-group"><label for="summary">Résumé</label><textarea id="summary">Développeur web passionné, rigoureux et orienté résultats, avec une bonne maîtrise des interfaces modernes, du responsive design et de la création d'applications performantes.</textarea></div>
-            </div>
-
-            <div class="form-section">
-              <h3>Expérience principale</h3>
-              <div class="form-grid">
-                <div class="form-group"><label for="expRole">Poste</label><input id="expRole" value="Développeur Front-End"></div>
-                <div class="form-group"><label for="expCompany">Entreprise</label><input id="expCompany" value="Agence Web Pro"></div>
-                <div class="form-group"><label for="expDate">Période</label><input id="expDate" value="2022 - Présent"></div>
-                <div class="form-group"><label for="expLocation">Ville</label><input id="expLocation" value="Lyon, France"></div>
-              </div>
-              <div class="form-group"><label for="expDescription">Description</label><textarea id="expDescription">Conception d'interfaces web modernes, intégration responsive, optimisation de l'expérience utilisateur et amélioration des performances des sites clients.</textarea></div>
-            </div>
-
-            <div class="form-section">
-              <h3>Formation et compétences</h3>
-              <div class="form-grid">
-                <div class="form-group"><label for="education">Formation</label><input id="education" value="Licence Informatique - Université de Paris"></div>
-                <div class="form-group"><label for="eduDate">Année</label><input id="eduDate" value="2021"></div>
-              </div>
-              <div class="form-group"><label for="skills">Compétences</label><textarea id="skills">HTML, CSS, JavaScript, React, Git, UI/UX, Responsive Design</textarea></div>
-            </div>
-
-            <div class="tips-box"><h3>Conseils automatiques</h3><ul id="tipsList"></ul></div>
-            <div class="generator-actions">
-              <button class="btn btn-primary" id="printBtn">Télécharger en PDF</button>
-              <button class="btn btn-secondary" id="exportBtn">Exporter JSON</button>
-              <label class="btn btn-secondary import-label">Importer JSON<input id="importInput" type="file" accept="application/json" hidden></label>
-              <button class="btn btn-outline" id="resetBtn">Réinitialiser</button>
-            </div>
-          </div>
-
-          <div class="preview-panel">
-            <div class="cv-document cv-template-pro" id="cv-preview">
-              <div class="cv-header">
-                <img id="previewPhoto" class="cv-photo" alt="Photo du candidat" hidden>
-                <div><h2 id="previewName">Jean Dupont</h2><p id="previewJob">Développeur Web Fullstack</p></div>
-              </div>
-              <div class="cv-body">
-                <aside>
-                  <div class="cv-section"><h2>Contact</h2><p id="previewEmail">jean.dupont@email.com</p><p id="previewPhone">06 12 34 56 78</p><p id="previewAddress">Paris, France</p><p id="previewWebsite">linkedin.com/in/jeandupont</p></div>
-                  <div class="cv-section"><h2>Compétences</h2><p id="previewSkills">HTML, CSS, JavaScript, React, Git, UI/UX, Responsive Design</p></div>
-                  <div class="cv-section"><h2>Formation</h2><div class="cv-item"><h3 id="previewEducation">Licence Informatique - Université de Paris</h3><p class="cv-meta" id="previewEduDate">2021</p></div></div>
-                </aside>
-                <div>
-                  <div class="cv-section"><h2>Profil</h2><p id="previewSummary">Développeur web passionné, rigoureux et orienté résultats, avec une bonne maîtrise des interfaces modernes, du responsive design et de la création d'applications performantes.</p></div>
-                  <div class="cv-section"><h2>Expérience</h2><div class="cv-item"><h3 id="previewExpRole">Développeur Front-End</h3><p class="cv-meta"><span id="previewExpCompany">Agence Web Pro</span> • <span id="previewExpDate">2022 - Présent</span> • <span id="previewExpLocation">Lyon, France</span></p><p id="previewExpDescription">Conception d'interfaces web modernes, intégration responsive, optimisation de l'expérience utilisateur et amélioration des performances des sites clients.</p></div></div>
-                  <div class="cv-section qr-section"><h2>Référence rapide</h2><div id="qrBox" class="qr-box">CV</div><p class="cv-meta">Code visuel décoratif pour un rendu moderne.</p></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="studio-panel"><div class="studio-metrics"><div class="metric"><span>Score CV</span><strong id="scoreValue">0</strong></div><div class="metric"><span>Complétion</span><strong id="completionValue">0%</strong></div><div class="progress-wrap"><div class="progress-bar" id="completionBar"></div></div></div><div class="tool-row"><button class="chip active" data-template="pro">Professionnel</button><button class="chip" data-template="modern">Moderne</button><button class="chip" data-template="minimal">Minimaliste</button><button class="color-dot active" data-color="#2563eb" style="--dot:#2563eb" aria-label="Couleur bleue"></button><button class="color-dot" data-color="#7c3aed" style="--dot:#7c3aed" aria-label="Couleur violette"></button><button class="color-dot" data-color="#0f766e" style="--dot:#0f766e" aria-label="Couleur verte"></button><button class="color-dot" data-color="#ea580c" style="--dot:#ea580c" aria-label="Couleur orange"></button></div></div>
+        <div class="generator-layout"><div class="form-panel"><div class="form-section"><h3>Informations personnelles</h3><div class="form-grid"><div class="form-group"><label for="fullname">Nom complet</label><input id="fullname" value="Jean Dupont" autocomplete="name"></div><div class="form-group"><label for="jobtitle">Poste recherché</label><input id="jobtitle" value="Développeur Web Fullstack"></div><div class="form-group"><label for="email">Email</label><input id="email" value="jean.dupont@email.com" autocomplete="email"></div><div class="form-group"><label for="phone">Téléphone</label><input id="phone" value="06 12 34 56 78" autocomplete="tel"></div><div class="form-group"><label for="address">Adresse</label><input id="address" value="Paris, France" autocomplete="address-level2"></div><div class="form-group"><label for="website">LinkedIn / Portfolio</label><input id="website" value="linkedin.com/in/jeandupont"></div></div><div class="form-group"><label for="photoInput">Photo de profil</label><input id="photoInput" type="file" accept="image/*"></div></div><div class="form-section"><h3>Profil professionnel</h3><div class="form-group"><label for="summary">Résumé</label><textarea id="summary">Développeur web passionné, rigoureux et orienté résultats, avec une bonne maîtrise des interfaces modernes, du responsive design et de la création d'applications performantes.</textarea></div></div><div class="form-section"><h3>Expérience principale</h3><div class="form-grid"><div class="form-group"><label for="expRole">Poste</label><input id="expRole" value="Développeur Front-End"></div><div class="form-group"><label for="expCompany">Entreprise</label><input id="expCompany" value="Agence Web Pro"></div><div class="form-group"><label for="expDate">Période</label><input id="expDate" value="2022 - Présent"></div><div class="form-group"><label for="expLocation">Ville</label><input id="expLocation" value="Lyon, France"></div></div><div class="form-group"><label for="expDescription">Description</label><textarea id="expDescription">Conception d'interfaces web modernes, intégration responsive, optimisation de l'expérience utilisateur et amélioration des performances des sites clients.</textarea></div></div><div class="form-section"><h3>Formation et compétences</h3><div class="form-grid"><div class="form-group"><label for="education">Formation</label><input id="education" value="Licence Informatique - Université de Paris"></div><div class="form-group"><label for="eduDate">Année</label><input id="eduDate" value="2021"></div></div><div class="form-group"><label for="skills">Compétences</label><textarea id="skills">HTML, CSS, JavaScript, React, Git, UI/UX, Responsive Design</textarea></div></div><div class="tips-box"><h3>Conseils automatiques</h3><ul id="tipsList"></ul></div><div class="generator-actions"><button class="btn btn-primary" id="printBtn">Télécharger en PDF</button><button class="btn btn-secondary" id="exportBtn">Exporter JSON</button><label class="btn btn-secondary import-label">Importer JSON<input id="importInput" type="file" accept="application/json" hidden></label><button class="btn btn-outline" id="resetBtn">Réinitialiser</button></div></div><div class="preview-panel"><div class="cv-document cv-template-pro" id="cv-preview"><div class="cv-header"><img id="previewPhoto" class="cv-photo" alt="Photo du candidat" hidden><div><h2 id="previewName">Jean Dupont</h2><p id="previewJob">Développeur Web Fullstack</p></div></div><div class="cv-body"><aside><div class="cv-section"><h2>Contact</h2><p id="previewEmail">jean.dupont@email.com</p><p id="previewPhone">06 12 34 56 78</p><p id="previewAddress">Paris, France</p><p id="previewWebsite">linkedin.com/in/jeandupont</p></div><div class="cv-section"><h2>Compétences</h2><p id="previewSkills">HTML, CSS, JavaScript, React, Git, UI/UX, Responsive Design</p></div><div class="cv-section"><h2>Formation</h2><div class="cv-item"><h3 id="previewEducation">Licence Informatique - Université de Paris</h3><p class="cv-meta" id="previewEduDate">2021</p></div></div></aside><div><div class="cv-section"><h2>Profil</h2><p id="previewSummary">Développeur web passionné, rigoureux et orienté résultats, avec une bonne maîtrise des interfaces modernes, du responsive design et de la création d'applications performantes.</p></div><div class="cv-section"><h2>Expérience</h2><div class="cv-item"><h3 id="previewExpRole">Développeur Front-End</h3><p class="cv-meta"><span id="previewExpCompany">Agence Web Pro</span> • <span id="previewExpDate">2022 - Présent</span> • <span id="previewExpLocation">Lyon, France</span></p><p id="previewExpDescription">Conception d'interfaces web modernes, intégration responsive, optimisation de l'expérience utilisateur et amélioration des performances des sites clients.</p></div></div><div class="cv-section qr-section"><h2>Référence rapide</h2><div id="qrBox" class="qr-box">CV</div><p class="cv-meta">Code visuel décoratif pour un rendu moderne.</p></div></div></div></div></div></div>
       </div>
     </section>
 
-    <section id="lettre">
-      <div class="container">
-        <div class="section-header"><span class="section-badge">Lettre de motivation gratuite</span><h2 class="section-title">Générez une base de lettre de motivation en un clic.</h2><p>La lettre reprend automatiquement votre nom, votre profil et le poste recherché.</p></div>
-        <div class="letter-card">
-          <div class="form-grid"><div class="form-group"><label for="companyTarget">Entreprise ciblée</label><input id="companyTarget" value="Votre entreprise"></div><div class="form-group"><label for="letterCity">Ville</label><input id="letterCity" value="Niamey"></div></div>
-          <button class="btn btn-primary" id="letterBtn">Générer la lettre</button>
-          <textarea id="letterOutput" class="letter-output" placeholder="Votre lettre apparaîtra ici..."></textarea>
-          <button class="btn btn-secondary" id="copyLetterBtn">Copier la lettre</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="faq">
-      <div class="container">
-        <div class="section-header"><span class="section-badge">FAQ CV gratuit</span><h2 class="section-title">Questions fréquentes sur la création de CV en ligne.</h2></div>
-        <div class="faq-grid">
-          <article class="faq-item"><h3>Le site de CV est-il gratuit ?</h3><p>Oui, CV Gratuit Pro fonctionne sans paiement et sans inscription.</p></article>
-          <article class="faq-item"><h3>Les données du CV sont-elles envoyées ?</h3><p>Non, elles restent dans le navigateur grâce au stockage local.</p></article>
-          <article class="faq-item"><h3>Comment télécharger le CV en PDF ?</h3><p>Cliquez sur le bouton PDF puis choisissez “Enregistrer en PDF” dans la fenêtre d’impression.</p></article>
-        </div>
-      </div>
-    </section>
+    <section id="lettre"><div class="container"><div class="section-header"><span class="section-badge">Lettre de motivation gratuite</span><h2 class="section-title">Générez une base de lettre de motivation en un clic.</h2><p>La lettre reprend automatiquement votre nom, votre profil et le poste recherché.</p></div><div class="letter-card"><div class="form-grid"><div class="form-group"><label for="companyTarget">Entreprise ciblée</label><input id="companyTarget" value="Votre entreprise"></div><div class="form-group"><label for="letterCity">Ville</label><input id="letterCity" value="Niamey"></div></div><button class="btn btn-primary" id="letterBtn">Générer la lettre</button><textarea id="letterOutput" class="letter-output" placeholder="Votre lettre apparaîtra ici..."></textarea><button class="btn btn-secondary" id="copyLetterBtn">Copier la lettre</button></div></div></section>
+    <section id="faq"><div class="container"><div class="section-header"><span class="section-badge">FAQ CV gratuit</span><h2 class="section-title">Questions fréquentes sur la création de CV en ligne.</h2></div><div class="faq-grid"><article class="faq-item"><h3>Le site de CV est-il gratuit ?</h3><p>Oui, CV Gratuit Pro fonctionne sans paiement et sans inscription.</p></article><article class="faq-item"><h3>Les données du CV sont-elles envoyées ?</h3><p>Non, elles restent dans le navigateur grâce au stockage local.</p></article><article class="faq-item"><h3>Comment télécharger le CV en PDF ?</h3><p>Cliquez sur le bouton PDF puis choisissez “Enregistrer en PDF” dans la fenêtre d’impression.</p></article></div></div></section>
   </main>
 
   <footer><div class="container"><a href="#accueil" class="logo"><div class="logo-icon">CV</div><span>Gratuit Pro</span></a><p>Créer un CV moderne, professionnel et gratuit en ligne.</p></div></footer>
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/pro-tools.js"></script>
 </body>
 </html>
